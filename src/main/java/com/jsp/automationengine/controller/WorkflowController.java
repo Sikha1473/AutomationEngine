@@ -12,13 +12,13 @@ public class WorkflowController {
     @Autowired
     private WorkflowService service;
 
-    // ✅ CREATE / UPDATE DRAFT
+    // for create and update DRAFT
     @PostMapping
     public WorkflowModel create(@RequestBody WorkflowDTO dto) {
         return service.createWorkflow(dto);
     }
 
-    // ✅ ACTIVATE
+    // for activate
     @PutMapping("/activate")
     public WorkflowModel activate(
             @RequestParam String wfCode,
@@ -27,7 +27,7 @@ public class WorkflowController {
         return service.activateWorkflow(wfCode, tenantId);
     }
 
-    // ✅ INACTIVATE
+    //  for inactive
     @PutMapping("/inactivate")
     public String inactivate(
             @RequestParam String wfCode,
@@ -37,7 +37,7 @@ public class WorkflowController {
         return "Workflow inactivated";
     }
 
-    // ✅ GET
+    // for getting the data/ GET
     @GetMapping("/{wfCode}")
     public WorkflowModel get(
             @PathVariable String wfCode,

@@ -13,7 +13,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     @Autowired
     private WorkflowRepository repository;
 
-    // ✅ CREATE / UPDATE DRAFT
+    // Create/update Draft
     @Override
     public WorkflowModel createWorkflow(WorkflowDTO dto) {
 
@@ -25,13 +25,13 @@ public class WorkflowServiceImpl implements WorkflowService {
                 );
 
         if (draft != null) {
-            // 👉 Update existing draft
+            // Updated existing draft here
             draft.setModifiedDate(new Date());
             mapFields(draft, dto);
             return repository.save(draft);
         }
 
-        // 👉 Create new draft
+        // Created new draft
         WorkflowModel latest = repository
                 .findTopByWorkflowCodeAndTenantIdOrderByWorkflowVersionDesc(
                         dto.getWorkflowCode(),
@@ -53,7 +53,7 @@ public class WorkflowServiceImpl implements WorkflowService {
         return repository.save(wf);
     }
 
-    // ✅ ACTIVATE WORKFLOW
+    // Activating Workflow
     @Override
     public WorkflowModel activateWorkflow(String wfCode, String tenantId) {
 
@@ -66,17 +66,17 @@ public class WorkflowServiceImpl implements WorkflowService {
             throw new RuntimeException("No DRAFT found to activate");
         }
 
-        // 👉 Inactivate all ACTIVE
+        //  Inactivating all ACTIVE here
         repository.inactivateAllActive(wfCode, tenantId);
 
-        // 👉 Activate draft
+        // To Activate draft
         draft.setStatusFlag("ACTIVE");
 
-        // 👉 Increment version
+        // For Increment version
         int newVersion = draft.getWorkflowVersion() + 1;
         draft.setWorkflowVersion(newVersion);
 
-        // 👉 Update workflowId
+        // To Update workflowId
         draft.setWorkflowId(wfCode + "_" + newVersion);
 
         draft.setModifiedDate(new Date());
@@ -84,13 +84,13 @@ public class WorkflowServiceImpl implements WorkflowService {
         return repository.save(draft);
     }
 
-    // ✅ INACTIVATE
+    // Logic To Inactivate
     @Override
     public void inactivateWorkflow(String wfCode, String tenantId) {
         repository.inactivateAllActive(wfCode, tenantId);
     }
 
-    // ✅ GET WORKFLOW
+    // TO GET WORKFLOW
     @Override
     public WorkflowModel getWorkflowByCode(String wfCode, String tenantId){
 
